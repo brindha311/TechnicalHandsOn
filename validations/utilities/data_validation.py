@@ -9,6 +9,8 @@ Date : 16.12.2023
 import pandas as pd
 
 
+# A class has been established to facilitate future enhancements in the data validation section. 
+# Duplicate checks can be executed without the need for introducing a class.
 class DataValidation:
     def __init__(self, df):
         self.df = df
@@ -54,7 +56,7 @@ class DataValidation:
             if dup_count > 0:
                 samples = self.df[duplicate].groupby(input_columns).size().reset_index(
                     name='number_of_duplicates')
-            # when no duplicate generate below message.
+            # no duplicate generate below message. This session is for improve readable
             else:
                 samples = f"combinations of columns: {', '.join(input_columns)} have no duplicates"
 
