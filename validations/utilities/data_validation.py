@@ -40,30 +40,27 @@ class DataValidation:
         Return:
         result: dictionary {'count': sum of duplicates, 'samples': duplicate Dataframe}
         """
-        try:
-            # Check if the DataFrame is defined
-            self.check_df()
+        # Check if the DataFrame is defined
+        self.check_df()
 
-            # Check if the list of input columns matches with the defined dataframe columns
-            self.check_columns(input_columns, self.df.columns)
+        # Check if the list of input columns matches with the defined dataframe columns
+        self.check_columns(input_columns, self.df.columns)
 
-            # identify duplicates based on list of columns
-            duplicate = self.df.duplicated(subset=input_columns, keep=mark_duplicates)
-            # number of cases where duplicates occur.
-            dup_count = duplicate.sum()
+        # identify duplicates based on list of columns
+        duplicate = self.df.duplicated(subset=input_columns, keep=mark_duplicates)
+        # number of cases where duplicates occur.
+        dup_count = duplicate.sum()
 
-            # Verify duplicate count and generate dataframe with group count of duplicate rows for the input columns.
-            if dup_count > 0:
-                samples = self.df[duplicate].groupby(input_columns).size().reset_index(
-                    name='number_of_duplicates')
-            # no duplicate generate below message. This session is for improve readable
-            else:
-                samples = f"combinations of columns: {', '.join(input_columns)} have no duplicates"
+        # Verify duplicate count and generate dataframe with group count of duplicate rows for the input columns.
+        if dup_count > 0:
+            samples = self.df[duplicate].groupby(input_columns).size().reset_index(
+                name='number_of_duplicates')
+        # when no duplicate generate below message.
+        else:
+            samples = f"combinations of columns: {', '.join(input_columns)} have no duplicates"
 
-            # create dictionary with duplicate count and samples
-            result = {'count': dup_count, 'samples': samples}
-            # create dictionary
-            return result
+        # create dictionary with duplicate count and samples
+        result = {'count': dup_count, 'samples': samples}
+        # create dictionary
+        return result
 
-        except Exception as e:
-            return {'error': str(e)}
